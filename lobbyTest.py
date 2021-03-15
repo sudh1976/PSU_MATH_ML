@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from pcp import pcp
+from op import op
 from matplotlib.animation import FuncAnimation
 
 ## Animation plot update
@@ -25,7 +26,8 @@ def updatefig(n):
 data = loadmat("lobby.mat")
 X = data['X']
 
-L, S = pcp(X)
+# L, S = pcp(X)
+L, S = op(X)
 
 ## Show the resulting videos
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16,4))
