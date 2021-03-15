@@ -33,7 +33,8 @@ def op(M):
     m, n = np.shape(M)
 
     # choose any lambda smaller than (3 / 7) * 1/sqrt(0.05 * n)
-    lam = 0.005
+    lam = 0.01      # ideal setup for mnist
+    # lam = 0.005     # ideal setup for synthetic data
     # lam = 1 / sqrt(max(m, n))
     # lam = (3 / 7) * 1/sqrt(0.05 * n)
 
