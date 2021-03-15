@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
 from numpy.linalg import norm
-from op import op, pcp
+from op import op
 
 ## Load data
 data = loadmat("mnistSubset.mat")
@@ -21,19 +21,19 @@ Y = np.append(Y, Xk[:, 100:111], axis=1)
 
 print(Y.shape)
 
-L, C = op(Y)
+L, C = op(Y, test='mnist')
 l2norm_C = []
 
 for ii in range(Y.shape[1]):
     column_norm = norm(C[:, ii])
     l2norm_C.append(column_norm)
 
-outliers = np.argwhere(np.array(l2norm_C) > 2)
-print(outliers)
-for outlier in np.squeeze(outliers):
-    Xtemp = Y[:, outlier].reshape(28, 28)
-    plt.imshow(Xtemp.T)
-    plt.show()
+# outliers = np.argwhere(np.array(l2norm_C) > 2)
+# print(outliers)
+# for outlier in np.squeeze(outliers):
+#     Xtemp = Y[:, outlier].reshape(28, 28)
+#     plt.imshow(Xtemp.T)
+#     plt.show()
 # classes = [1, 7]
 # figs, axes = plt.subplots(3, 3, figsize=(12, 8))
 # plt.set_cmap('gray')

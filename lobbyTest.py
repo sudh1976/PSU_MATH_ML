@@ -27,7 +27,7 @@ data = loadmat("lobby.mat")
 X = data['X']
 
 # L, S = pcp(X)
-L, S = op(X)
+L, S = op(X, test='lobby')
 
 ## Show the resulting videos
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16,4))

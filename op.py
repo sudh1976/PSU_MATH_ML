@@ -13,7 +13,7 @@ from numpy.linalg import norm
 from numpy import sqrt, zeros, sign
 
 
-def op(M):
+def op(M, test):
     r"""
     Principal Component Pursuit solved with ADMM
 
@@ -34,7 +34,16 @@ def op(M):
 
     # choose any lambda smaller than (3 / 7) * 1/sqrt(0.05 * n)
     lam = 0.01      # ideal setup for mnist
-    # lam = 0.005     # ideal setup for synthetic data
+    #lam = 0.01     # ideal setup for synthetic data
+    #lam_s = 0.00099
+
+    if test == 'mnist':
+        lam = 0.01
+        lam_s = 0.01
+    else:
+        lam = 0.008
+        lam_s = 0.006
+
     # lam = 1 / sqrt(max(m, n))
     # lam = (3 / 7) * 1/sqrt(0.05 * n)
 
@@ -57,7 +66,7 @@ def op(M):
     k = 0
 
     while stopping != 1:
-        print(mu_temp)
+        #print(mu_temp)
         YL = L_temp0 + (t_temp1 - 1)/t_temp0*(L_temp0 - L_temp1)
         YC = C_temp0 + (t_temp1 - 1)/t_temp0*(C_temp0 - C_temp1)
 
@@ -67,7 +76,7 @@ def op(M):
         L_new = svt(GL, mu_temp * lam/2)
 
         GC = YC - 0.5 * M_difference
-        C_new = col_st(GC, mu_temp * lam/2)
+        C_new = col_st(GC, mu_temp * lam_s/2)
 
         t_new = (1+sqrt(4*t_temp0**2+1))/2
         mu_new = max(eta*mu_temp, mu_bar)
@@ -75,6 +84,7 @@ def op(M):
         S_L = 2*(YL - L_new) + (L_new + C_new - YL - YC)
         S_C = 2*(YC - C_new) + (L_new + C_new - YL - YC)
 
+        #print(f"S_L: {norm(S_L, ord='fro')**2}, S_C: {norm(S_C, ord='fro')**2}")
         # convergence condition
         err = norm(S_L, ord='fro')**2 + norm(S_C, ord='fro')**2
         print(f"{k}th trial - Error: {err}")
