@@ -13,7 +13,7 @@ from numpy.linalg import norm
 from numpy import sqrt, zeros, sign
 
 
-def op(M, test):
+def op(M, test, lam=0.01, lam_s=0.01):
     r"""
     Principal Component Pursuit solved with ADMM
 
@@ -33,16 +33,9 @@ def op(M, test):
     m, n = np.shape(M)
 
     # choose any lambda smaller than (3 / 7) * 1/sqrt(0.05 * n)
-    lam = 0.01      # ideal setup for mnist
+    #lam = 0.01      # ideal setup for mnist
     #lam = 0.01     # ideal setup for synthetic data
     #lam_s = 0.00099
-
-    if test == 'mnist':
-        lam = 0.01
-        lam_s = 0.01
-    else:
-        lam = 0.008
-        lam_s = 0.006
 
     # lam = 1 / sqrt(max(m, n))
     # lam = (3 / 7) * 1/sqrt(0.05 * n)
@@ -87,7 +80,7 @@ def op(M, test):
         #print(f"S_L: {norm(S_L, ord='fro')**2}, S_C: {norm(S_C, ord='fro')**2}")
         # convergence condition
         err = norm(S_L, ord='fro')**2 + norm(S_C, ord='fro')**2
-        print(f"{k}th trial - Error: {err}")
+        #print(f"{k}th trial - Error: {err}")
         if err < tol**2:
             stopping = 1
         else:

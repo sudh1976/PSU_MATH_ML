@@ -11,9 +11,9 @@ Spring 2019
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import loadmat
-from pcp import pcp
 from op import op
 from matplotlib.animation import FuncAnimation
+from numpy.linalg import norm
 
 ## Animation plot update
 def updatefig(n):
@@ -26,8 +26,24 @@ def updatefig(n):
 data = loadmat("lobby.mat")
 X = data['X']
 
-# L, S = pcp(X)
-L, S = op(X, test='lobby')
+# lam_list = np.linspace(0.001, 0.009, 10)
+# print(lam_list)
+# heatmap = np.zeros((len(lam_list), len(lam_list)))
+# for l in range(len(lam_list)):
+#     for ls in range(len(lam_list)):
+#         lam = lam_list[l]
+#         lam_s = lam_list[ls]
+#         L, S, errL, errS = op(X, test='lobby', lam=lam, lam_s=lam_s)
+#         Xhat = L + S
+#         heatmap[l, ls] = norm(X - Xhat, ord='fro') / norm(X, ord='fro')
+#
+#         print(l, ls)
+#
+# plt.imshow(heatmap)
+# plt.title("Heat Map")
+# plt.show()
+
+L, S = op(X, test='lobby', lam=0.008, lam_s=0.006)
 
 ## Show the resulting videos
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(16,4))
