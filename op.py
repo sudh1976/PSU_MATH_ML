@@ -1,35 +1,31 @@
 """
 RPCA demo - op.py
-
 ECE 510
-
 python version: 3.7.3
-
 Spring 2019
 """
 
 import numpy as np
 from numpy.linalg import norm
 from numpy import sqrt, zeros, sign
+import time
 
 
 def op(M, test, lam=0.01, lam_s=0.01):
     r"""
     Principal Component Pursuit solved with ADMM
-
     Syntax:     L, S = pcp(M)
-
     Inputs:
         :param M: M matrix of size [m, n]
         :param omega: sampling set, Omega(i, j) = 1 if M_i,j is observed
         :param lam: input parameter
-
     Ouputs:
         L: The low rank matrix with size [D, N]
         S: The sparse matrix with size [D, N]
     """
 ### Parameters that we'll use
-
+    t1 = time.perf_counter()
+    
     m, n = np.shape(M)
 
     # choose any lambda smaller than (3 / 7) * 1/sqrt(0.05 * n)
@@ -92,20 +88,20 @@ def op(M, test, lam=0.01, lam_s=0.01):
             t_temp0 = t_new
             mu_temp = mu_new
             k = k + 1
+            
+        t2 = time.perf_counter()
+        Time = t2 - t1
 
-    return L_new, C_new
+    return L_new, C_new, Time
 
 
 def st(X, tau):
     r"""
     Soft - thresholding/shrinkage operator
-
     Syntax:     Xs = st(X, tau)
-
     Input:
     :param X: Input matrix
     :param tau: Shrinkage parameter
-
     Output:
     Xs: The result of applying soft thrsholding to every element in X
     """
@@ -119,13 +115,10 @@ def st(X, tau):
 def svt(X, tau):
     r"""
     Singular value thresholding operator
-
     Syntax:     Xs = svt(X, tau)
-
     Inputs:
         :param X: The input matrix
         :param tau: The input shrinkage parameter
-
     Output:
         Xs is the result of applying singular value thresholding to X
     """
