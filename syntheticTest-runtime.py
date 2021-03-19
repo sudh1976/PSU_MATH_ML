@@ -4,8 +4,8 @@ RPCA demo - syntheticTest
 
 import numpy as np
 from numpy.random import randn, rand
+import matplotlib.pyplot as plt
 from numpy.linalg import norm, svd
-from pcp import pcp
 from op import op
 
 
