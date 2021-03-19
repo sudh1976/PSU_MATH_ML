@@ -1,8 +1,10 @@
 """
-RPCA demo - op.py
+op.py
 ECE 510
 python version: 3.7.3
-Spring 2019
+
+The code is based on the author's matlab code from author's website below:
+https://sites.gatech.edu/huan-xu/publications/
 """
 
 import numpy as np
