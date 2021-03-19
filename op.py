@@ -17,8 +17,8 @@ def op(M, test, lam=0.01, lam_s=0.01):
     Syntax:     L, S = pcp(M)
     Inputs:
         :param M: M matrix of size [m, n]
-        :param omega: sampling set, Omega(i, j) = 1 if M_i,j is observed
-        :param lam: input parameter
+        :param lam: input parameter for L matrix
+        :param lam_s: input parameter for C matrix
     Ouputs:
         L: The low rank matrix with size [D, N]
         S: The sparse matrix with size [D, N]
@@ -55,7 +55,6 @@ def op(M, test, lam=0.01, lam_s=0.01):
     k = 0
 
     while stopping != 1:
-        #print(mu_temp)
         YL = L_temp0 + (t_temp1 - 1)/t_temp0*(L_temp0 - L_temp1)
         YC = C_temp0 + (t_temp1 - 1)/t_temp0*(C_temp0 - C_temp1)
 
@@ -73,7 +72,6 @@ def op(M, test, lam=0.01, lam_s=0.01):
         S_L = 2*(YL - L_new) + (L_new + C_new - YL - YC)
         S_C = 2*(YC - C_new) + (L_new + C_new - YL - YC)
 
-        #print(f"S_L: {norm(S_L, ord='fro')**2}, S_C: {norm(S_C, ord='fro')**2}")
         # convergence condition
         err = norm(S_L, ord='fro')**2 + norm(S_C, ord='fro')**2
         #print(f"{k}th trial - Error: {err}")
