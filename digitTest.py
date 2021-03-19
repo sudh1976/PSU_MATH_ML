@@ -31,7 +31,7 @@ for l in range(len(lam_list)):
     for lc in range(len(lam_list)):
         lam = lam_list[l]
         lam_c = lam_list[lc]
-        L, C = op(Y, test='mnist', lam = lam, lam_s = lam_c)
+        L, C, _ = op(Y, test='mnist', lam = lam, lam_s = lam_c)
         Yhat = L + C
         heatmap[l, lc] = norm(Y - Yhat, ord='fro') / norm(Y, ord='fro')
 
@@ -44,36 +44,31 @@ plt.savefig('digitTest_heatmap_1')
 plt.show()
 
 
-# l2norm_C = []
+# calculate l2 norm of each column
+L, C, _ = op(Y, test='mnist', lam=0.01, lam_s=0.01)
+l2norm_C = []
+for ii in range(Y.shape[1]):
+    column_norm = norm(C[:, ii])
+    l2norm_C.append(column_norm)
 
-# for ii in range(Y.shape[1]):
-#     column_norm = norm(C[:, ii])
-#     l2norm_C.append(column_norm)
+for ii in range(Y.shape[1]):
 
-# outliers = np.argwhere(np.array(l2norm_C) > 2)
-# print(outliers)
-# for outlier in np.squeeze(outliers):
-#     Xtemp = Y[:, outlier].reshape(28, 28)
-#     plt.imshow(Xtemp.T)
-#     plt.show()
-# classes = [1, 7]
-# figs, axes = plt.subplots(3, 3, figsize=(12, 8))
-# plt.set_cmap('gray')
-# axes = axes.ravel()
-# figInd = 0
-# for ii in classes:
-#     Xtemp = X[:, ii + ii * 200].reshape(28,28)
-#     axes[figInd].imshow(Xtemp.T)
-#     figInd+=1
-#     Xtemp = X[:, ii + 50 + ii * 200].reshape(28,28)
-#     axes[figInd].imshow(Xtemp.T)
-#     figInd+=1
-#     Xtemp = X[:, ii + 100 + ii * 200].reshape(28,28)
-#     axes[figInd].imshow(Xtemp.T)
-#     figInd+=1
+    # outliers in ones
+    if 0 <= ii < 200:
+        if l2norm_C[ii] > 3:
+            Xtemp = Y[:, ii].reshape(28, 28)
+            plt.imshow(Xtemp.T)
+            plt.show()
 
-# plt.suptitle('Example Images')
-# plt.show()
+    # outliers in sevens
+    else:
+        if l2norm_C[ii] < 2:
+            Xtemp = Y[:, ii].reshape(28, 28)
+            plt.imshow(Xtemp.T)
+            plt.show()
 
-# plt.stem(l2norm_C)
-# plt.show()
+plt.title("Outlier Pursuit for 200 ones and 11 sevens")
+plt.ylabel('L2 norm of Ci')
+plt.xlabel('image index i')
+plt.stem(l2norm_C)
+plt.show()
